@@ -5,7 +5,9 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "noImplicitAny": false,
+    "allowJs": true,
+    
+    
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -21,6 +23,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/package/utils/drawFreehand.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

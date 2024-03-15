@@ -5,8 +5,9 @@
 * * 说明：maplibre自由绘制Bezier
 -------------------------------------------
 -------------------------------------------------------*/
+
 import { Bezier } from './bezier-js/bezier.js'
-const drawFreehand = function (this: any, map) {
+const drawFreehand = function (this: any, map: any) {
   console.log(Bezier, 'BezierBezierBezier')
   this.map = map
   this.layersId = []
@@ -31,13 +32,13 @@ const drawFreehand = function (this: any, map) {
   this.throttledDrawLine = this.throttle(this.redraw.bind(this), 20)
   this.mapClick = this.mapClick.bind(this)
 }
-drawFreehand.prototype.start = function (color, MGValue) {
+drawFreehand.prototype.start = function (color: any, MGValue: any) {
   this.isStart = true
   this.setColor(color, MGValue)
   this.map.on('click', this.mapClick)
   this.map.getCanvas().style.cursor = 'crosshair'
 }
-drawFreehand.prototype.setColor = function (color, MGValue) {
+drawFreehand.prototype.setColor = function (color: any, MGValue: any) {
   this.geojson.properties.fillColor = color
   this.geojson.properties.MGValue = MGValue
   this.fillColor = color
@@ -74,14 +75,14 @@ drawFreehand.prototype.redo = function () {
 drawFreehand.prototype.getFeatures = function () {
   const ids = this.sourceId.slice(0, this.layersId.length)
   const features = [] as any
-  ids.forEach((x) => {
+  ids.forEach((x: any) => {
     features.push(this.map.getSource(x)._data)
   })
   return features
 }
 drawFreehand.prototype.clear = function () {
-  this.layersId.forEach((e) => this.map.removeLayer(e))
-  this.sourceId.forEach((e) => this.map.removeSource(e))
+  this.layersId.forEach((e: any) => this.map.removeLayer(e))
+  this.sourceId.forEach((e: any) => this.map.removeSource(e))
   this.layersId.length = 0
   this.sourceId.length = 0
   this.map.off('click', this.mapClick)
@@ -140,14 +141,14 @@ drawFreehand.prototype.mapClick = function () {
     this.getFeatures()
   }
 }
-drawFreehand.prototype.redraw = function (e) {
+drawFreehand.prototype.redraw = function (e: { point: any; lngLat: { toArray: () => any } }) {
   this.point.push(e.point)
   this.geojson.geometry.coordinates[0].push(e.lngLat.toArray())
   this.map.getSource(this.uuid).setData(this.geojson)
 }
-drawFreehand.prototype.throttle = function (func, delay) {
+drawFreehand.prototype.throttle = function (func: (...args: any[]) => void, delay: number) {
   let lastCall = 0
-  return function (...args) {
+  return function (...args: any[]) {
     const now = new Date().getTime()
     if (now - lastCall < delay) {
       return
@@ -156,6 +157,7 @@ drawFreehand.prototype.throttle = function (func, delay) {
     func(...args)
   }
 }
+
 drawFreehand.prototype.generateUUID = function () {
   let dt = new Date().getTime()
   const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
