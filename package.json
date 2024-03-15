@@ -1,7 +1,7 @@
 {
   "name": "draw-freehand",
   "private": false,
-  "version": "2.0.2",
+  "version": "0.1.0",
   "type": "module",
   "files": [
     "dist"
@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "npm version patch && npm publish"
   },
   "dependencies": {
     "bezier-js": "^6.1.4",
