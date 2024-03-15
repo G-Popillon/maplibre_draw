@@ -10,6 +10,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 // import DrawFreehand from 'draw-free'
 import DrawFreehand from '../package/index.ts'
 // const { DrawFreehand } = testUi()
+
 console.log(DrawFreehand)
 
 onMounted(() => {
