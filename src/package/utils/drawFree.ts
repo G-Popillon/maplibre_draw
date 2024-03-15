@@ -6,7 +6,7 @@
 -------------------------------------------
 -------------------------------------------------------*/
 import { Bezier } from './bezier-js/bezier.js'
-export class DrawFreehand {
+export default class {
   private map: any
   private layersId: string[]
   private sourceId: string[]

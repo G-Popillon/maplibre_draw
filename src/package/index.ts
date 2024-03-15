@@ -1,6 +1,6 @@
 // import eosBtn from './table/index.vue'
 // import drawFreehand from './utils/drawFreehand'
-import { DrawFreehand } from './utils/drawFree'
+import DrawFreehand from './utils/drawFree'
 
 // const components = [eosBtn]
 // const install = function (Vue) {
