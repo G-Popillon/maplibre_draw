@@ -1,13 +1,13 @@
 {
-  "name": "draw-freehand",
+  "name": "draw-free",
   "private": false,
-  "version": "0.0.3",
+  "version": "0.0.0",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "dist/draw-freehand.es.ts",
-  "module": "dist/draw-freehand.es.ts",
+  "main": "dist/draw-free.es.ts",
+  "module": "dist/draw-free.es.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "bezier-js": "^6.1.4",
-    "draw-freehand": "^0.1.1",
     "maplibre-gl": "^4.1.0",
     "vue": "^3.4.21"
   },
