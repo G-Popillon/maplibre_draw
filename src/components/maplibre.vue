@@ -3,25 +3,28 @@
 </template>
 
 <script setup lang="ts">
-// import { onMounted } from 'vue'
-// import maplibregl from 'maplibre-gl'
+import { onMounted } from 'vue'
+import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
-// // import testUi from 'draw-freehand'
-// import testUi from '../package/index.ts'
-// console.log(testUi,'testUi')
+// import testUi from 'draw-free'
+import DrawFreehand from '../package/index.ts'
+// const { DrawFreehand } = testUi()
 
-// onMounted(() => {
-//   const map = new maplibregl.Map({
-//     container: 'map',
-//     style: 'https://demotiles.maplibre.org/style.json',
-//     center: [0, 0],
-//     zoom: 1,
-//   })
-//   const draw = new testUi.drawFreehand(map)
-//   console.log(draw, 'draw')
-//   draw.start('#ff0', 1)
-// })
+onMounted(() => {
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://demotiles.maplibre.org/style.json',
+    center: [0, 0],
+    zoom: 1,
+  })
+  const draw = new DrawFreehand(map)
+  console.log(draw, 'draw')
+  draw.start('#ff0', 1)
+  setTimeout(() => {
+   console.log( draw.getFeatures())
+  }, 5000);
+})
 </script>
 
 <style scoped></style>

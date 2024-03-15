@@ -6,7 +6,7 @@
 -------------------------------------------
 -------------------------------------------------------*/
 
-import { Bezier } from './bezier-js/bezier.js'
+import { Bezier } from '../package/utils/bezier-js/bezier.js'
 const drawFreehand = function (this: any, map: any) {
   console.log(Bezier, 'BezierBezierBezier')
   this.map = map

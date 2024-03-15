@@ -11,6 +11,9 @@ dependencies:
   bezier-js:
     specifier: ^6.1.4
     version: 6.1.4
+  draw-free:
+    specifier: ^0.0.6
+    version: 0.0.6(typescript@5.4.2)
   maplibre-gl:
     specifier: ^4.1.0
     version: 4.1.0
@@ -625,6 +628,17 @@ packages:
   /de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
     dev: true
+
+  /draw-free@0.0.6(typescript@5.4.2):
+    resolution: {integrity: sha512-2sqx1u4cqdVehawYpOPGCVCQgdrMi6FNDMlXhcGq+wp/DyC1RsRJZhIFs1WqJEwyC8mjzdLhc6n7YadWh1gVAg==}
+    dependencies:
+      '@types/bezier-js': 4.1.3
+      bezier-js: 6.1.4
+      maplibre-gl: 4.1.0
+      vue: 3.4.21(typescript@5.4.2)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
 
   /earcut@2.2.4:
     resolution: {integrity: sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==}
