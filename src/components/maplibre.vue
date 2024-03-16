@@ -23,6 +23,7 @@ onMounted(() => {
   console.log(draw, 'draw')
   draw.start('#ff0', 1)
   setTimeout(() => {
+    
     console.log(draw.getFeatures())
   }, 5000)
 })
