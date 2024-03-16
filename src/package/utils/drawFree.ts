@@ -8,7 +8,7 @@
 import { GeoJSONSource, Map, MapMouseEvent } from 'maplibre-gl'
 import { Bezier } from './bezier-js/bezier.js'
 
-export default function drawFreehand(map: Map) {
+export function drawFreehand(map: Map) {
   let layersId: string[] = []
   let sourceId: string[] = []
   let isStart = false
