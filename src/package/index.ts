@@ -1,3 +1,7 @@
-import { drawFreehand as drawFree } from './utils/drawFree'
+import { drawFreehand } from './utils/drawFree'
 
-export default { drawFree }
+const drawFree = {
+  drawFreehand,
+}
+
+export default drawFree

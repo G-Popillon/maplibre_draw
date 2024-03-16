@@ -9,9 +9,10 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 
 // import drawFreehand from 'draw-free'
 // console.log(drawFreehand, 'drawFreehand')
-import drawFreehand from '../package/index.ts'
-const { drawFree } = drawFreehand
-console.log(drawFreehand, 'drawFreehand')
+import drawFree from '../../dist/index.es'
+// import drawFree from '../package/index.ts'
+const { drawFreehand } = drawFree
+console.log(drawFree, 'drawFreehand')
 
 onMounted(() => {
   const map = new maplibregl.Map({
@@ -20,7 +21,7 @@ onMounted(() => {
     center: [0, 0],
     zoom: 1,
   })
-  const draw = drawFree(map)
+  const draw = drawFreehand(map)
   console.log(draw, 'drawddd')
   draw.start('#ff0', 1)
   setTimeout(() => {
