@@ -8,6 +8,7 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 // import DrawFreehand from 'draw-free'
+// console.log(DrawFreehand,'DrawFreehand')
 // const { drawFreehand } = DrawFreehand as any
 import drawFreehand from '../package/index.ts'
 // const { DrawFreehand } = testUi()

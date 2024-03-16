@@ -6,8 +6,8 @@
   "files": [
     "dist"
   ],
-  "main": "dist/draw-free.es.ts",
-  "module": "dist/draw-free.es.ts",
+  "main": "dist/draw-free.es.js",
+  "module": "dist/draw-free.es.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
