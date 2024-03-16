@@ -12,8 +12,8 @@ dependencies:
     specifier: ^6.1.4
     version: 6.1.4
   draw-free:
-    specifier: ^0.0.15
-    version: 0.0.15(typescript@5.4.2)
+    specifier: ^0.0.17
+    version: 0.0.17(typescript@5.4.2)
   maplibre-gl:
     specifier: ^4.1.0
     version: 4.1.0
@@ -647,6 +647,18 @@ packages:
       '@types/bezier-js': 4.1.3
       bezier-js: 6.1.4
       draw-free: 0.0.13(typescript@5.4.2)
+      maplibre-gl: 4.1.0
+      vue: 3.4.21(typescript@5.4.2)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /draw-free@0.0.17(typescript@5.4.2):
+    resolution: {integrity: sha512-9YGb0b0EwHQ08ZggCIAKeBOAWGpOgWn5aD+lccXpMKz/ILIGkWyMIEYMpq9Bn5kNr66BvHirD4iYMWAG0qkhHQ==}
+    dependencies:
+      '@types/bezier-js': 4.1.3
+      bezier-js: 6.1.4
+      draw-free: 0.0.15(typescript@5.4.2)
       maplibre-gl: 4.1.0
       vue: 3.4.21(typescript@5.4.2)
     transitivePeerDependencies:
