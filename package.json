@@ -24,7 +24,7 @@
   "dependencies": {
     "@types/bezier-js": "^4.1.3",
     "bezier-js": "^6.1.4",
-    "draw-free": "^0.0.19",
+    "draw-free": "^0.0.20",
     "maplibre-gl": "^4.1.0",
     "vue": "^3.4.21"
   },
