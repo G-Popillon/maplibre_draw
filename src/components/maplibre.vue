@@ -7,7 +7,7 @@ import { onMounted } from 'vue'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
-// import drawFreehand from 'draw-free'
+// import { drawFreehand } from 'draw-free'
 // console.log(DrawFreehand,'DrawFreehand')
 // const { drawFreehand } = DrawFreehand as any
 import drawFreehand from '../package/index.ts'
