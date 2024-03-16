@@ -16,9 +16,9 @@ export default defineConfig({
       },
     },
     lib: {
-      entry: 'src/package/index.ts',
+      entry: 'src/package/utils/drawFree.ts',
       name: 'index',
-      fileName: 'index',
+      fileName: (format) => `index.${format}.ts`,
     },
   },
 })
