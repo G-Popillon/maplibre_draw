@@ -1,6 +1,13 @@
-// 导出 setupCounter 函数的声明
+// 导出函数的声明
 
 import { Map } from 'maplibre-gl'
 
-export function setupCounter(element: HTMLButtonElement): void
-export function drawFreehand(map: Map): void
+export function drawFreehand(map: Map): {
+  isStart: Boolean
+  start: (color: string, MGValue: number) => void
+  setColor: (color: string, MGValue: number) => void
+  getFeatures: () => void
+  clear: () => void
+  revoke: () => void
+  redo: () => void
+}

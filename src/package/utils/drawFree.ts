@@ -11,7 +11,7 @@ import { Bezier } from './bezier-js/bezier.js'
 export function drawFreehand(map: Map) {
   let layersId: string[] = []
   let sourceId: string[] = []
-  let isStart = false
+  let isStart: Boolean = false
   let isClick = false
   let point: any[] = []
   let uuid = ''
@@ -54,8 +54,8 @@ export function drawFreehand(map: Map) {
     isClick = !isClick
     if (isClick) {
       uuid = generateUUID()
-      layersId.push(uuid as any)
-      sourceId.push(uuid as any)
+      layersId.push(uuid)
+      sourceId.push(uuid)
       geojson.geometry.coordinates[0].length = 0
       point.length = 0
       map.addSource(uuid, { type: 'geojson', data: geojson })
