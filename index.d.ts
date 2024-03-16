@@ -1,6 +1,2 @@
-import { Map } from 'maplibre-gl'
-interface drawFreehandType {
-  new (someProperty: Map): drawFreehand
-}
+// 导出 setupCounter 函数的声明
 export function setupCounter(element: HTMLButtonElement): void
-export declare function drawFreehand(map: Map): void

@@ -17,7 +17,7 @@ onMounted(() => {
     center: [0, 0],
     zoom: 1,
   })
-  const draw = new drawFreehand(map)
+  const draw = drawFreehand(map)
   console.log(draw, 'draw')
   draw.start('#ff0', 1)
   setTimeout(() => {
