@@ -1,3 +1,3 @@
-import { drawFreehand } from './utils/drawFree'
+import { drawFreehand as DrawFreehand } from './utils/drawFree'
 
-export default drawFreehand
+export default DrawFreehand

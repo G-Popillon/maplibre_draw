@@ -10,6 +10,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 // import drawFreehand from 'draw-free'
 // console.log(drawFreehand, 'drawFreehand')
 import drawFreehand from '../package/index.ts'
+console.log(drawFreehand,'drawFreehand')
 
 onMounted(() => {
   const map = new maplibregl.Map({
