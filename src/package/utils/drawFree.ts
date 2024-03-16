@@ -193,5 +193,5 @@ export function drawFreehand(map: Map) {
     }
   }
 
-  return { isStart, start, getFeatures, clear, revoke, redo }
+  return { isStart, start, getFeatures, clear, revoke, redo, setColor }
 }

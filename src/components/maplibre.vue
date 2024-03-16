@@ -6,11 +6,9 @@
 import { onMounted } from 'vue'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-
-// import drawFreehand from 'draw-free'
 // console.log(drawFreehand, 'drawFreehand')
-import drawFree from '../../dist/index.es'
-// import drawFree from '../package/index.ts'
+// import drawFree from '../../dist/index.es'
+import drawFree from '../package/index.ts'
 const { drawFreehand } = drawFree
 console.log(drawFree, 'drawFreehand')
 
@@ -24,9 +22,9 @@ onMounted(() => {
   const draw = drawFreehand(map)
   console.log(draw, 'drawddd')
   draw.start('#ff0', 1)
-  setTimeout(() => {
-    console.log(draw.getFeatures())
-  }, 5000)
+  // setTimeout(() => {
+  //   console.log(draw.getFeatures())
+  // }, 5000)
 })
 </script>
 
