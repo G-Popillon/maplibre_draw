@@ -1,7 +1,7 @@
 <template>
-  <maplibre />
+  <index />
 </template>
 <script setup lang="ts">
-import maplibre from './components/maplibre.vue'
+import index from './components/index.vue'
 </script>
 <style scoped></style>

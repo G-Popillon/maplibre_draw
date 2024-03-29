@@ -1,8 +1,16 @@
 // 导出函数的声明
+declare module '@turf/turf'
 
-import { Map } from 'maplibre-gl'
-
-export function drawFreehand(map: Map): {
+export function drawFreehand(map: any): {
+  isStart: Boolean
+  start: (color: string, MGValue: number) => void
+  setColor: (color: string, MGValue: number) => void
+  getFeatures: () => void
+  clear: () => void
+  revoke: () => void
+  redo: () => void
+}
+export function draw(map: any): {
   isStart: Boolean
   start: (color: string, MGValue: number) => void
   setColor: (color: string, MGValue: number) => void
