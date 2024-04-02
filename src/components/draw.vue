@@ -7,6 +7,7 @@
       <Button type="info" @click="start({ type: 'line' })">线</Button>
       <Button type="info" @click="start({ type: 'polygon' })">面</Button>
       <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f00', MGvalue: 1 })">自由</Button>
+      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#ff0', MGvalue: 1 })">自由</Button>
       <Button type="warning" @click="revoke">撤销（自由）</Button>
       <Button type="warning" @click="redo">重做（自由）</Button>
       <Button type="success" @click="get">获取数据（控制台）</Button>
@@ -22,8 +23,9 @@ const props = defineProps({
   maplibre: Object,
 })
 // import draw from 'draw-gs'
-import draw from '../../lib/main'
-console.log(draw, 'draw')
+import { draw } from '../../lib/main'
+// import draw from '../../lib/main'
+// console.log(draw, 'draw')
 const { start, clear, revoke, redo, getFeatures } = draw(props.maplibre as any)
 
 const get = () => {

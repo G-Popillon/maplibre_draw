@@ -11,9 +11,6 @@ dependencies:
   '@types/geojson':
     specifier: ^7946.0.14
     version: 7946.0.14
-  draw-gs:
-    specifier: ^0.0.29
-    version: 0.0.29
   maplibre-gl:
     specifier: ^4.1.1
     version: 4.1.1
@@ -1684,95 +1681,6 @@ packages:
 
   /density-clustering@1.3.0:
     resolution: {integrity: sha512-icpmBubVTwLnsaor9qH/4tG5+7+f61VcqMN3V3pm9sxxSCt2Jcs0zWOgwZW9ARJYaKD3FumIgHiMOcIMRRAzFQ==}
-    dev: false
-
-  /draw-gs@0.0.15:
-    resolution: {integrity: sha512-ZtinNhbvsYDy6b548Q7AORHrp3jOuh6tsxioygV7FqCOm1q+CE+db3NWIfT8vGCCE8fu9D2PKLQzGc2czwZk9w==}
-    dev: false
-
-  /draw-gs@0.0.16:
-    resolution: {integrity: sha512-nG8kQbahPi4GiZDhdTogIDLbpV8CuLB0g6t0cr4/04HZcskvheVyJh7KoN5KnOyy1YlM2c8113i4T78pRUjyTg==}
-    dependencies:
-      draw-gs: 0.0.15
-    dev: false
-
-  /draw-gs@0.0.17:
-    resolution: {integrity: sha512-HeOg/3lDZq0nyzY+FO32juwzYWoZzF+PuT0/f1UKYWS+GKcc1gjVBzZSC5WsJgmAvAIGr0KWbY0Y21zZXnNZ4w==}
-    dependencies:
-      draw-gs: 0.0.16
-    dev: false
-
-  /draw-gs@0.0.18:
-    resolution: {integrity: sha512-apUcOuqCgdV3pfQrwSi6aj7T4nv31gYGNmixgwfcXjCMniKO0RM5Kvi6x0xLW1QtBnvoq705F5X2V6ZN7gVIdg==}
-    dependencies:
-      draw-gs: 0.0.17
-    dev: false
-
-  /draw-gs@0.0.19:
-    resolution: {integrity: sha512-c7ZRWQMozq8s+yRk+CVRXla7+ERqSKdmsRWwwHWF5hALr9+MF5WNnXu3P4MEwvbeNEaXwuXMYj4tD6Zzxzuscg==}
-    dependencies:
-      draw-gs: 0.0.18
-    dev: false
-
-  /draw-gs@0.0.20:
-    resolution: {integrity: sha512-DRGNzrYMiIUCwMMY2099+wbuNW+ztkJiAcIPqWhcBzGu1lFX+iz8t4hWtsjE6SRYjCWs0AVctnPvqoPUT4sI6g==}
-    dependencies:
-      draw-gs: 0.0.19
-    dev: false
-
-  /draw-gs@0.0.21:
-    resolution: {integrity: sha512-DYqb03qroswzHDnY7JLfVvu+Q3udsTY5oBYWpRhGIlIAZoyAGQgaForlykieIplBF/c4baox2XRYzT5HDdHBhg==}
-    dependencies:
-      draw-gs: 0.0.20
-    dev: false
-
-  /draw-gs@0.0.22:
-    resolution: {integrity: sha512-VvwD8lw16X+8RTGECwR+5bDfisU/LJ9FRN4PEhQKwqDgGQoOnkOsOn7SIuyjmBAabHyzGvp1y7CNBKE8put8mA==}
-    dependencies:
-      draw-gs: 0.0.21
-    dev: false
-
-  /draw-gs@0.0.23:
-    resolution: {integrity: sha512-W+cbE2EO26BfpVxmR+xryPS5jwJGJV8eSewoFyajpjx18BetPtybSvx9P3vHWVahvIzvr+9hbVppH+XWE9hn3w==}
-    dependencies:
-      draw-gs: 0.0.22
-    dev: false
-
-  /draw-gs@0.0.24:
-    resolution: {integrity: sha512-ajArMk63HcftW0M18e6QATTCE/jrF6SLCAvxXfYL2Dw8x9naSJw3kObi1QsrKtO6ak6Sbjj7/aK55AbeEL9hfw==}
-    dependencies:
-      draw-gs: 0.0.23
-    dev: false
-
-  /draw-gs@0.0.25:
-    resolution: {integrity: sha512-84Z5m9RKYZHMTSQO3jI208EeEzF6KrH/yY6e+H0P9T/DOEl3kT2Q44dJteB3QEVGf7vkXA+xnQI0xZlD9HWqFw==}
-    dependencies:
-      draw-gs: 0.0.24
-    dev: false
-
-  /draw-gs@0.0.26:
-    resolution: {integrity: sha512-Q5k6H3qeQPOb1Cqo0tByrfe28VcgrKcQhRvSXj50TfbAipW5PPSU8GjQ6FJpSRQtDDhQdocAf1kglr3GyvzEBw==}
-    dependencies:
-      draw-gs: 0.0.25
-    dev: false
-
-  /draw-gs@0.0.27:
-    resolution: {integrity: sha512-g0VV2vUaQxBOP7da3mgFvTZuSbFxpi7bYka8EuKwMuBC+5CQ7w2NnYhoy8F3/y2GfG/owJpQOKP47oFKRaqChQ==}
-    dependencies:
-      draw-gs: 0.0.26
-    dev: false
-
-  /draw-gs@0.0.28:
-    resolution: {integrity: sha512-M7FwXfJjCKJdBLu2NxFkhplPHzPeobXP95vkKkZil3HWrFJ14ZogAyMaA1T76eCfiLx4rXxIt73eJC1yCkjh1Q==}
-    dependencies:
-      draw-gs: 0.0.27
-    dev: false
-
-  /draw-gs@0.0.29:
-    resolution: {integrity: sha512-JcMpY8Ua/d4Xqt6zK1ueX2bqfdhJPRrHcIJbVuuoC8jbWyzLIt2bSeTJJ6j7dbr/+jrRwUmn8nCmGnNmgCFGiA==}
-    dependencies:
-      draw-gs: 0.0.28
-      maplibre-gl: 4.1.1
     dev: false
 
   /earcut@2.2.4:

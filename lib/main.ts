@@ -1,3 +1,1 @@
-import draw from './index'
-
-export default draw
+export { default as draw } from './draw'
