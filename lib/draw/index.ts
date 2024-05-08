@@ -6,12 +6,11 @@
 -------------------------------------------
 -------------------------------------------------------*/
 import { GeoJSONSource, GeoJSONSourceSpecification, Map, MapMouseEvent } from 'maplibre-gl'
-import { Bezier } from './bezier-js/bezier.js'
-import { FeatureCollection } from 'geojson'
+import { Bezier } from '../bezier-js/bezier.js'
 import * as turf from '@turf/turf'
 
-export default function (map: Map) {
-  let type = 'free' //绘制的类型目前支持 point、line、polygon、free
+export default function (map: Map, callback: Function) {
+  let type = 'free' //绘制的类型目前支持 point、line、polygon、free、cricle
   let uuid = '' //图层随机id
   let layersId: string[] = [] //暂存的id
   let sourceId: string[] = [] //暂存的id
@@ -24,7 +23,19 @@ export default function (map: Map) {
   let point: any[] = [] //用于转换贝塞尔曲线的数组
   //---------------------------json数据---------------------------//
   //点
-  let json_point: FeatureCollection = { type: 'FeatureCollection', features: [] }
+  let json_point = {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [0, 0], // 初始坐标
+        },
+        properties: {},
+      },
+    ],
+  }
   //线
   let json_line = {
     type: 'Feature',
@@ -59,17 +70,20 @@ export default function (map: Map) {
     map.off('contextmenu', mapClick_right)
     clearJson()
     if (isDraw) {
-      mapClick_right()
+      isNew = true
+      map.scrollZoom.enable()
+      map.dragPan.enable()
+      map.doubleClickZoom.enable()
     }
     isDraw = true
     type = op.type || 'point'
     compute = op.compute || false
     options = op
-    options.compute = compute
+    // options.compute = compute
 
-    json_line.properties = options
-    json_polygon.properties = options
-    json_area.properties = options
+    json_line.properties = op
+    json_polygon.properties = op
+    json_area.properties = op
 
     switch (type) {
       case 'point':
@@ -77,7 +91,7 @@ export default function (map: Map) {
         layersId.push(uuid)
         sourceId.push(uuid)
         json_point.features.length = 0
-        map.addSource(uuid, { type: 'geojson', data: json_point })
+        map.addSource(uuid, { type: 'geojson', data: json_point as any })
         map.addLayer({
           id: uuid,
           type: 'circle',
@@ -168,7 +182,7 @@ export default function (map: Map) {
       geometry: { type: 'Point', coordinates: e.lngLat.toArray() },
     })
     const source_text = map.getSource(uuid + 'text') as GeoJSONSource
-    source_text.setData(json_point)
+    source_text.setData(json_point as any)
   }
   //---------------------------面---------------------------//
   const drawPolygon = (e: MapMouseEvent & Object) => {
@@ -301,6 +315,87 @@ export default function (map: Map) {
       map.doubleClickZoom.disable()
     }
   }
+  //---------------------------圆---------------------------//
+  const drawCircle = (e: MapMouseEvent & Object) => {
+    if (isNew) {
+      uuid = generateUUID()
+      layersId.push(uuid)
+      sourceId.push(uuid)
+      json_point.features.length = 0
+      json_polygon.geometry.coordinates.length = 0
+      json_polygon.geometry.coordinates[0] = []
+      point.length = 0
+      map.addSource(uuid, { type: 'geojson', data: json_polygon as any })
+      map.addSource(uuid + 'area', { type: 'geojson', data: json_area as any })
+      map.addSource(uuid + 'point', { type: 'geojson', data: json_point as any })
+      map.addLayer({
+        id: uuid,
+        type: 'fill',
+        source: uuid,
+        paint: {
+          'fill-antialias': false,
+          'fill-color': options.fillColor || '#ff0',
+          'fill-opacity': 0.8,
+        },
+      })
+      map.addLayer({
+        id: uuid + 'outline',
+        type: 'line',
+        source: uuid,
+        paint: {
+          'line-width': 2,
+          'line-color': 'black',
+          // 'line-translate-anchor':'viewport'
+        },
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round',
+        },
+      })
+      map.addLayer({
+        id: uuid + 'point',
+        type: 'circle',
+        source: uuid + 'point',
+        paint: {
+          'circle-color': options['circle-color'] || '#ff0',
+          'circle-radius': options['circle-radius'] || 5,
+          'circle-stroke-color': options['circle-stroke-color'] || '#000',
+          'circle-stroke-width': options['circle-stroke-width'] || 2,
+        },
+      })
+      map.addLayer({
+        id: uuid + 'area',
+        type: 'symbol',
+        source: uuid + 'area',
+        layout: {
+          'text-field': ['get', 'area'],
+          // 'text-field': '456',
+          'text-allow-overlap': true,
+          // 'text-anchor': 'bottom',
+          'text-overlap': 'always',
+          'text-offset': [0, 1],
+          visibility: compute ? 'visible' : 'none',
+        },
+      })
+      isNew = false
+      const pointFeature = {
+        type: 'Feature',
+        properties: { name: 0 },
+        geometry: { type: 'Point', coordinates: e.lngLat.toArray() },
+      }
+      json_point.features.push(JSON.parse(JSON.stringify(pointFeature)) as any)
+      json_point.features.push(JSON.parse(JSON.stringify(pointFeature)) as any)
+      json_area.geometry.coordinates = e.lngLat.toArray() as any
+
+      const source_point = map.getSource(uuid + 'point') as GeoJSONSource
+      source_point.setData(json_point as any)
+      map.on('mousemove', throttledRedraw)
+      map.on('contextmenu', mapClick_right)
+      map.scrollZoom.disable()
+      map.dragPan.disable()
+      map.doubleClickZoom.disable()
+    }
+  }
   //ev: MapMouseEvent & Object
   const mapClick = (e: MapMouseEvent & Object) => {
     switch (type) {
@@ -315,6 +410,9 @@ export default function (map: Map) {
         break
       case 'free':
         drawFree(e)
+        break
+      case 'circle':
+        drawCircle(e)
         break
       default:
         break
@@ -390,14 +488,39 @@ export default function (map: Map) {
           source2.setData(json_area as any)
         }
         break
+      case 'circle':
+        if (json_point.features.length) {
+          json_point.features[1].geometry.coordinates = e.lngLat.toArray()
+          //计算两点距离
+          var from = turf.point(json_point.features[0].geometry.coordinates)
+          var to = turf.point(json_point.features[1].geometry.coordinates)
+          var radius = turf.distance(from, to, { units: 'miles' })
+          //接受一个点，根据给定的半径（以度、弧度、英里或公里为单位）计算圆多边形，并指定精度步数。
+          var options = { steps: 500, units: 'miles', properties: { foo: 'bar' } }
+          var circle = turf.circle(from, radius, options)
+          json_polygon.geometry.coordinates = circle.geometry.coordinates
+
+          // 获取面积
+          const area = turf.area(json_polygon) / 1000000 //km²
+          json_area.properties.area = turf.round(area, 2) + 'km²'
+          const source_point = map.getSource(uuid + 'point') as GeoJSONSource
+          const source = map.getSource(uuid) as GeoJSONSource
+          const source_area = map.getSource(uuid + 'area') as GeoJSONSource
+          source_point.setData(json_point as any)
+          source.setData(json_polygon as any)
+          source_area.setData(json_area as any)
+        }
+        break
       default:
         break
     }
   }
-  const mapClick_right = () => {
+  const mapClick_right = (e: MapMouseEvent & Object) => {
+    e.preventDefault()
     map.off('mousemove', throttledRedraw)
     map.off('contextmenu', mapClick_right)
     isNew = true
+
     map.scrollZoom.enable()
     map.dragPan.enable()
     map.doubleClickZoom.enable()
@@ -432,34 +555,72 @@ export default function (map: Map) {
             map.removeSource(uuid + 'area')
             return
           }
-
+          /* 方案1  缺点：处理后的落区和处理前相差很大 */
           //---------------------------转换贝塞尔---------------------------//
-          const newPoints = [...point.slice(point.length / 5), ...point.slice(0, point.length / 5)]
-          const curve = new Bezier(newPoints)
-          const newPoint = curve.getLUT()
-          newPoint.push(newPoint[0])
+          // const newPoints = [...point.slice(point.length / 5), ...point.slice(0, point.length / 5)]
+          // const curve = new Bezier(newPoints)
+          // const newPoint = curve.getLUT()
+          // newPoint.push(newPoint[0])
+          // json_polygon.geometry.coordinates[0].length = 0
+          // for (let i = 0; i < newPoint.length; i++) {
+          //   const point = map.unproject(newPoint[i])
+          //   json_polygon.geometry.coordinates[0].push(point.toArray())
+          // }
+          // // const source4 = map.getSource(uuid) as GeoJSONSource
+          // source.setData(JSON.parse(JSON.stringify(json_polygon)))
+          /* 方案2  */
+          // const data = source.serialize().data as any
+          // const coordinates = data.geometry.coordinates[0]
+          // const points = turf.lineString(coordinates)
+          // const curved = turf.bezierSpline(points,{resolution:100000,sharpness:2})
+
+          // 优化方案1 优化：处理后的落区和处理前落区相差不大
+          const newPoints = [...point.slice(point.length / 5), ...point.slice(0, point.length / 5), point.slice(point.length / 5)[0]]
+          // 将点数组分成N个子数组
+          const len = newPoints.length > 10 ? 5 : 3
+          const chunkSize = Math.ceil(newPoints.length / len)
+          const pointChunks = []
+          for (let i = 0; i < newPoints.length; i += chunkSize) {
+            pointChunks.push(newPoints.slice(i, i + chunkSize))
+          }
+          let bezierPoints = [] as any
+          pointChunks.forEach((arr) => {
+            const curve = new Bezier(arr)
+            const newPoint = curve.getLUT()
+            bezierPoints.push(...newPoint)
+          })
+          // const curve = new Bezier(newPoints)
+          // const newPoint = curve.getLUT(point.length)
+          // newPoint.push(newPoint[0])
           json_polygon.geometry.coordinates[0].length = 0
-          for (let i = 0; i < newPoint.length; i++) {
-            const point = map.unproject(newPoint[i])
+          for (let i = 0; i < bezierPoints.length; i++) {
+            const point = map.unproject(bezierPoints[i])
             json_polygon.geometry.coordinates[0].push(point.toArray())
           }
           // const source4 = map.getSource(uuid) as GeoJSONSource
           source.setData(JSON.parse(JSON.stringify(json_polygon)))
-          //跟新面积
+
+          //更新面积
           const area = turf.area(json_polygon) / 1000000 //km²
           json_area.properties.area = turf.round(area, 2) + 'km²'
           const sourcearea = map.getSource(uuid + 'area') as GeoJSONSource
           sourcearea.setData(JSON.parse(JSON.stringify(json_area)))
         }
-
         break
 
+      case 'circle':
+        map.removeLayer(uuid + 'point')
+        map.removeSource(uuid + 'point')
+        break
       default:
         break
     }
+    if (callback) {
+      callback(getFeatures())
+    }
   }
   const getFeatures = () => {
-    const ids = sourceId.slice(0, layersId.length)
+    const ids = layersId
     const features = [] as any
     ids.forEach((x: any) => {
       const source = map.getSource(x) as GeoJSONSource
@@ -478,6 +639,7 @@ export default function (map: Map) {
     })
     sourceId.forEach((i) => {
       map.removeSource(i)
+      if (map.getSource(i + 'point')) map.removeSource(i + 'point')
       if (map.getSource(i + 'text')) map.removeSource(i + 'text')
       if (map.getSource(i + 'area')) map.removeSource(i + 'area')
     })
@@ -517,7 +679,7 @@ export default function (map: Map) {
       func(...args)
     }
   }
-  const throttledRedraw = throttle(redraw, 20)
+  const throttledRedraw = throttle(redraw, 25)
   //---------------------------撤销---------------------------//
   const revoke = () => {
     if (type == 'free') {
