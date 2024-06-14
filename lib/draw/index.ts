@@ -19,6 +19,8 @@ export default function (map: Map, callback: Function) {
   let isDraw = false //绘制状态，是否正在绘制
   let isNew = true //判断是否绘制完一次
   let compute = false
+  let smooth = false //平滑处理
+  let showLayer = true
   //平面坐标
   let point: any[] = [] //用于转换贝塞尔曲线的数组
   //---------------------------json数据---------------------------//
@@ -78,7 +80,9 @@ export default function (map: Map, callback: Function) {
     isDraw = true
     type = op.type || 'point'
     compute = op.compute || false
+    smooth = op.smooth || false
     options = op
+    showLayer = op.showLayer //网格订正不显示layer
     // options.compute = compute
 
     json_line.properties = op
@@ -542,6 +546,7 @@ export default function (map: Map, callback: Function) {
       case 'free':
         if (json_polygon.geometry.coordinates[0].length) {
           source.setData(JSON.parse(JSON.stringify(json_polygon)))
+
           if (isSelfIntersection(point)) {
             //判断是否自相交
             alert('落区自相交，请重画')
@@ -555,56 +560,71 @@ export default function (map: Map, callback: Function) {
             map.removeSource(uuid + 'area')
             return
           }
-          /* 方案1  缺点：处理后的落区和处理前相差很大 */
-          //---------------------------转换贝塞尔---------------------------//
-          // const newPoints = [...point.slice(point.length / 5), ...point.slice(0, point.length / 5)]
-          // const curve = new Bezier(newPoints)
-          // const newPoint = curve.getLUT()
-          // newPoint.push(newPoint[0])
-          // json_polygon.geometry.coordinates[0].length = 0
-          // for (let i = 0; i < newPoint.length; i++) {
-          //   const point = map.unproject(newPoint[i])
-          //   json_polygon.geometry.coordinates[0].push(point.toArray())
-          // }
-          // // const source4 = map.getSource(uuid) as GeoJSONSource
-          // source.setData(JSON.parse(JSON.stringify(json_polygon)))
-          /* 方案2  */
-          // const data = source.serialize().data as any
-          // const coordinates = data.geometry.coordinates[0]
-          // const points = turf.lineString(coordinates)
-          // const curved = turf.bezierSpline(points,{resolution:100000,sharpness:2})
-
-          // 优化方案1 优化：处理后的落区和处理前落区相差不大
-          const newPoints = [...point.slice(point.length / 5), ...point.slice(0, point.length / 5), point.slice(point.length / 5)[0]]
-          // 将点数组分成N个子数组
-          const len = newPoints.length > 10 ? 5 : 3
-          const chunkSize = Math.ceil(newPoints.length / len)
-          const pointChunks = []
-          for (let i = 0; i < newPoints.length; i += chunkSize) {
-            pointChunks.push(newPoints.slice(i, i + chunkSize))
+          //---------------------------是否显示layer  网格订正用---------------------------//
+          if (!showLayer) {
+            map.setLayoutProperty(uuid, 'visibility', 'none')
+            map.setLayoutProperty(uuid + 'outline', 'visibility', 'none')
+            // map.setLayoutProperty('my-layer', 'visibility', 'none');
           }
-          let bezierPoints = [] as any
-          pointChunks.forEach((arr) => {
-            const curve = new Bezier(arr)
-            const newPoint = curve.getLUT()
-            bezierPoints.push(...newPoint)
-          })
-          // const curve = new Bezier(newPoints)
-          // const newPoint = curve.getLUT(point.length)
-          // newPoint.push(newPoint[0])
-          json_polygon.geometry.coordinates[0].length = 0
-          for (let i = 0; i < bezierPoints.length; i++) {
-            const point = map.unproject(bezierPoints[i])
-            json_polygon.geometry.coordinates[0].push(point.toArray())
-          }
-          // const source4 = map.getSource(uuid) as GeoJSONSource
-          source.setData(JSON.parse(JSON.stringify(json_polygon)))
+          //---------------------------是否平滑处理---------------------------//
+          if (smooth) {
+            /* 方案1  缺点：处理后的落区和处理前相差很大 */
+            //---------------------------转换贝塞尔---------------------------//
+            // const newPoints = [...point.slice(point.length / 5), ...point.slice(0, point.length / 5)]
+            // const curve = new Bezier(newPoints)
+            // const newPoint = curve.getLUT()
+            // newPoint.push(newPoint[0])
+            // json_polygon.geometry.coordinates[0].length = 0
+            // for (let i = 0; i < newPoint.length; i++) {
+            //   const point = map.unproject(newPoint[i])
+            //   json_polygon.geometry.coordinates[0].push(point.toArray())
+            // }
+            // // const source4 = map.getSource(uuid) as GeoJSONSource
+            // source.setData(JSON.parse(JSON.stringify(json_polygon)))
+            /* 方案2  */
+            // const data = source.serialize().data as any
+            // const coordinates = data.geometry.coordinates[0]
+            // const points = turf.lineString(coordinates)
+            // const curved = turf.bezierSpline(points,{resolution:100000,sharpness:2})
 
-          //更新面积
-          const area = turf.area(json_polygon) / 1000000 //km²
-          json_area.properties.area = turf.round(area, 2) + 'km²'
-          const sourcearea = map.getSource(uuid + 'area') as GeoJSONSource
-          sourcearea.setData(JSON.parse(JSON.stringify(json_area)))
+            // 优化方案1 优化：处理后的落区和处理前落区相差不大
+
+            const newPoints = [...point.slice(point.length / 5), ...point.slice(0, point.length / 5), point.slice(point.length / 5)[0]]
+            // 将点数组分成N个子数组
+
+            const len = newPoints.length > 10 ? 5 : 3
+            const chunkSize = Math.ceil(newPoints.length / len)
+            const pointChunks = []
+            for (let i = 0; i < newPoints.length; i += chunkSize) {
+              pointChunks.push(newPoints.slice(i, i + chunkSize))
+            }
+            let bezierPoints = [] as any
+            pointChunks.forEach((arr) => {
+              if (arr.length > 1) {
+                const curve = new Bezier(arr)
+                const newPoint = curve.getLUT()
+                bezierPoints.push(...newPoint)
+              } else {
+                bezierPoints.push(...arr)
+              }
+            })
+            // const curve = new Bezier(newPoints)
+            // const newPoint = curve.getLUT(point.length)
+            // newPoint.push(newPoint[0])
+            json_polygon.geometry.coordinates[0].length = 0
+            for (let i = 0; i < bezierPoints.length; i++) {
+              const point = map.unproject(bezierPoints[i])
+              json_polygon.geometry.coordinates[0].push(point.toArray())
+            }
+            // const source4 = map.getSource(uuid) as GeoJSONSource
+            source.setData(JSON.parse(JSON.stringify(json_polygon)))
+
+            //更新面积
+            const area = turf.area(json_polygon) / 1000000 //km²
+            json_area.properties.area = turf.round(area, 2) + 'km²'
+            const sourcearea = map.getSource(uuid + 'area') as GeoJSONSource
+            sourcearea.setData(JSON.parse(JSON.stringify(json_area)))
+          }
         }
         break
 
@@ -679,7 +699,7 @@ export default function (map: Map, callback: Function) {
       func(...args)
     }
   }
-  const throttledRedraw = throttle(redraw, 25)
+  const throttledRedraw = throttle(redraw, 30)
   //---------------------------撤销---------------------------//
   const revoke = () => {
     if (type == 'free') {

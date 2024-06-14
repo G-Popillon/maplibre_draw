@@ -6,8 +6,8 @@
       <Button type="info" @click="start({ type: 'point' })">点</Button>
       <Button type="info" @click="start({ type: 'line' })">线</Button>
       <Button type="info" @click="start({ type: 'polygon' })">面</Button>
-      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f00', MGvalue: 1 })">自由1</Button>
-      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f09', MGvalue: 2 })">自由2</Button>
+      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f00', MGvalue: 1,showLayer:false })">自由1</Button>
+      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f09', MGvalue: 2,showLayer:true  })">自由2</Button>
       <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f80', MGvalue: 3 })">自由3</Button>
       <Button type="info" @click="start({ type: 'circle', compute: true, fillColor: '#f165' })">圆</Button>
       <Button type="warning" @click="revoke">撤销（自由）</Button>
