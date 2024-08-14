@@ -1,19 +1,31 @@
 <template>
   <Card style="width: 100%">
-    <template #title>绘制</template>
+    <template #title>量算</template>
     <template #extra></template>
     <Space>
-      <Button type="info" @click="start({ type: 'point' })">点</Button>
-      <Button type="info" @click="start({ type: 'line' })">线</Button>
-      <Button type="info" @click="start({ type: 'polygon' })">面</Button>
-      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f00', MGvalue: 1,showLayer:false })">自由1</Button>
-      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f09', MGvalue: 2,showLayer:true  })">自由2</Button>
-      <Button type="info" @click="start({ type: 'free', compute: true, fillColor: '#f80', MGvalue: 3 })">自由3</Button>
-      <Button type="info" @click="start({ type: 'circle', compute: true, fillColor: '#f165' })">圆</Button>
-      <Button type="warning" @click="revoke">撤销（自由）</Button>
-      <Button type="warning" @click="redo">重做（自由）</Button>
+      <Button type="info" @click="startMeasure({ type: 'point' })">点</Button>
+      <Button type="info" @click="startMeasure({ type: 'line', measure: true })">线</Button>
+      <Button type="info" @click="startMeasure({ type: 'polygon', measure: true })">面</Button>
+      <Button type="info" @click="startMeasure({ type: 'circle', measure: true, fillColor: '#f165' })">圆</Button>
+      <Button type="info" @click="startMeasure({ type: 'free', measure: true, 'line-color': '#f80' })">画</Button>
+      <Button type="error" @click="clearMeasure">清空</Button>
+      <Button type="error" @click="stopMeasure">停止</Button>
+    </Space>
+  </Card>
+  <Card style="width: 100%">
+    <template #title>订正</template>
+    <template #extra></template>
+    <Space>
+      <Button type="info" @click="startDraw({ type: 'polygon', smooth: false, showLayer: true })">面</Button>
+      <Button type="info" @click="startDraw({ type: 'polygon', smooth: true, showLayer: true })">面（贝塞尔）</Button>
+      <Button type="info" @click="startDraw({ type: 'free', smooth: false, 'line-color': '#f19', MGvalue: 1, showLayer: true })">画</Button>
+      <Button type="info" @click="startDraw({ type: 'free', smooth: true, 'line-color': '#f19', MGvalue: 1, showLayer: true })">画(贝塞尔)</Button>
+      <Button type="info" @click="startDraw({ type: 'brush', fillColor: '#f165' })">刷</Button>
+      <Button type="warning" @click="revoke">撤销（矢量）</Button>
+      <Button type="warning" @click="redo">重做（矢量）</Button>
       <Button type="success" @click="get">获取数据（控制台）</Button>
-      <Button type="error" @click="clear">清空</Button>
+      <Button type="error" @click="clearDraw">清空</Button>
+      <Button type="error" @click="stopDraw">停止</Button>
     </Space>
   </Card>
 </template>
@@ -24,16 +36,17 @@ import { defineProps } from 'vue'
 const props = defineProps({
   maplibre: Object,
 })
-import { draw } from '../../lib/main'
+import { draw, measure } from '../../lib/main'
 
 // 定义你的回调函数
 const afterDraw = (e: any) => {
-  console.log(e)
+  console.log(e,'callback')
 }
-const { start, clear, revoke, redo, getFeatures } = draw(props.maplibre as any, afterDraw)
+const { startDraw, revoke, redo, getFeaturesFromDraw, clearDraw, stopDraw } = draw(props.maplibre as any, afterDraw)
+const { startMeasure, clearMeasure, stopMeasure } = measure(props.maplibre as any, afterDraw)
 
 const get = () => {
-  console.log(getFeatures())
+  console.log(getFeaturesFromDraw())
 }
 </script>
 

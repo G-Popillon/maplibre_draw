@@ -2,11 +2,15 @@
 declare module '@turf/turf'
 
 export function draw(map: any,callback:Function): {
-  isStart: Boolean
-  start: (op: any) => void
-  getFeatures: () => void
-  clear: () => void
+  startDraw: (op: any) => void
   revoke: () => void
   redo: () => void
-  isNew: Boolean
+  getFeaturesFromDraw: () => void
+  clearDraw: () => void
+  stopDraw: () => void
+}
+export function measure(map: any): {
+  startMeasure: (op: any) => void
+  clearMeasure: () => void
+  stopMeasure: () => void
 }
